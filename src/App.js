@@ -49,8 +49,8 @@ const containerAttributes = {
 };
 
 const treeProps = {
-  direction: "down",
-  rootPosition: [svgWidth / 2, 10],
+  direction: "up",
+  rootPosition: [svgWidth / 2, svgHeight / 2],
   spacing: {
     parentChild: 100,
     sibling: 20

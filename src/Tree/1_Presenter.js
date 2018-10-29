@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import * as d3 from "d3";
 
-let linkPathCreator;
+import Link from "../Link";
 
 const linkGroupAttributesCreator = () => ({
   fill: "none",
@@ -24,38 +24,6 @@ const TreePresenter = ({
   const root = d3.hierarchy(data);
   const tree = treeCreator(root);
 
-  switch (direction) {
-    case "right":
-      linkPathCreator = d3
-        .linkHorizontal()
-        .x(d => d.y)
-        .y(d => d.x);
-      break;
-    case "down":
-      linkPathCreator = d3
-        .linkVertical()
-        .x(d => d.y)
-        .y(d => d.x);
-      break;
-    case "left":
-      linkPathCreator = d3
-        .linkHorizontal()
-        .x(d => d.y)
-        .y(d => d.x);
-      break;
-    case "up":
-      linkPathCreator = d3
-        .linkVertical()
-        .x(d => d.y)
-        .y(d => d.x);
-      break;
-    default:
-      linkPathCreator = d3
-        .linkVertical()
-        .x(d => d.y)
-        .y(d => d.x);
-  }
-
   const subTreeProps = {
     root: tree,
     direction
@@ -71,27 +39,49 @@ const TreePresenter = ({
 const SubTree = ({ root, direction }) => {
   let dxParent = 0;
   let dyParent = 0;
+  let linkArrowConfig;
+
   if (root.parent) {
     switch (direction) {
       case "right":
         dxParent = root.x - root.parent.x;
         dyParent = root.y - root.parent.y;
+        linkArrowConfig = {
+          type: "curvedHorizontal",
+          arrowheadDirection: "end"
+        };
         break;
       case "down":
         dxParent = root.y - root.parent.y;
         dyParent = root.x - root.parent.x;
+        linkArrowConfig = {
+          type: "curvedVertical",
+          arrowheadDirection: "start"
+        };
         break;
       case "left":
         dxParent = root.parent.x - root.x;
         dyParent = root.parent.y - root.y;
+        linkArrowConfig = {
+          type: "curvedHorizontal",
+          arrowheadDirection: "start"
+        };
         break;
       case "up":
         dxParent = root.parent.y - root.y;
         dyParent = root.parent.x - root.x;
+        linkArrowConfig = {
+          type: "curvedVertical",
+          arrowheadDirection: "end"
+        };
         break;
       default:
         dxParent = root.y - root.parent.y;
         dyParent = root.x - root.parent.x;
+        linkArrowConfig = {
+          type: "curvedVertical",
+          arrowheadDirection: "start"
+        };
     }
   }
 
@@ -130,12 +120,18 @@ const SubTree = ({ root, direction }) => {
         </g>
         <g {...linkGroupAttributesCreator()} className="links">
           {root.parent ? (
-            <path
-              d={linkPathCreator({
-                source: { x: -dxParent, y: -dyParent },
-                target: { x: 0, y: 0 }
-              })}
-              markerEnd="url(#arrowhead)"
+            <Link
+              {...{
+                coordinates: {
+                  start: { x: -dxParent, y: -dyParent },
+                  end: { x: 0, y: 0 }
+                },
+                arrowheadDimensions: {
+                  height: 3,
+                  width: 10
+                },
+                ...linkArrowConfig
+              }}
             />
           ) : null}
         </g>
