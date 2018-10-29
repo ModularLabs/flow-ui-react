@@ -4,8 +4,6 @@ import Tree from "./Tree";
 const svgWidth = 400;
 const svgHeight = 200;
 
-// const zoom = 1;
-// const pan = [ 0, 0 ];
 const data = {
   "name": "Eve",
   "children": [
@@ -51,10 +49,10 @@ const containerAttributes = {
 }
 
 const treeProps = {
-  direction: "right",
-  rootPosition: [10, svgHeight / 2],
+  direction: "down",
+  rootPosition: [100, svgHeight / 2],
   spacing: {
-    parentChild: 100,
+    parentChild: 40,
     sibling: 10
   },
   data

@@ -1,10 +1,7 @@
 import React from 'react';
 import * as d3 from "d3"
 
-const linkPathCreator = d3
-  .linkHorizontal()
-  .x(d => d.y)
-  .y(d => d.x)
+let linkPathCreator;
 
 const linkGroupAttributesCreator = () => ({
   fill: "none",
@@ -23,24 +20,83 @@ const TreePresenter = ({
   spacing: { parentChild: parentChildSpacing, sibling: siblingSpacing },
   data
 }) => {
-  const tree = d3.tree().nodeSize([siblingSpacing, parentChildSpacing]);
+  const treeCreator = d3
+    .tree()
+    .nodeSize([siblingSpacing, parentChildSpacing]);
   const root = d3.hierarchy(data);
-  const treeWithDims = tree(root)
+  const tree = treeCreator(root)
+
+  switch(direction) {
+    case "right":
+      linkPathCreator = d3
+        .linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x);
+      break
+    case "down":
+      linkPathCreator = d3
+        .linkVertical()
+        .x(d => d.y)
+        .y(d => d.x)
+      break
+    case "left":
+      linkPathCreator = d3
+        .linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x)
+      break
+    case "up":
+      linkPathCreator = d3
+        .linkVertical()
+        .x(d => d.y)
+        .y(d => d.x)
+      break
+    default:
+      linkPathCreator = d3
+        .linkVertical()
+        .x(d => d.y)
+        .y(d => d.x)
+  }
+
+  const subTreeProps = {
+    root: tree,
+    direction
+  }
 
   return (
     <g transform={`translate(${rootPosition[0]},${rootPosition[1]})`}>
-      <SubTree root={treeWithDims}/>
+      <SubTree {...subTreeProps}/>
     </g>
   )
 }
 
-const SubTree = ({ root }) => {
+const SubTree = ({ root, direction }) => {
   let dxParent = 0;
   let dyParent = 0;
   if(root.parent) {
-    dxParent = root.x - root.parent.x;
-    dyParent = root.y - root.parent.y;
+    switch(direction) {
+      case "right":
+        dxParent = root.x - root.parent.x;
+        dyParent = root.y - root.parent.y;
+      break
+      case "down":
+        dxParent = root.y - root.parent.y;
+        dyParent = root.x - root.parent.x;
+      break
+      case "left":
+        dxParent = root.parent.x - root.x;
+        dyParent = root.parent.y - root.y;
+      break
+      case "up":
+        dxParent =  root.parent.y - root.y;
+        dyParent =  root.parent.x - root.x;
+      break
+      default:
+        dxParent = root.y - root.parent.y;
+        dyParent = root.x - root.parent.x;
+    }
   }
+
   return (
     <g transform={`translate(${dyParent},${dxParent})`} className="tree">
       <g className="nodes">
@@ -48,7 +104,7 @@ const SubTree = ({ root }) => {
           {
             root.children ? 
               <g className="children">
-                {root.children.map((child, key) => <SubTree root={child} key={key}/>)}
+                {root.children.map((child, key) => <SubTree root={child} key={key} direction={direction}/>)}
               </g> :
               null
           }
