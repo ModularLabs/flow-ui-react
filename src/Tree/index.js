@@ -1,3 +1,3 @@
-import TreePresenter from "./1_Presenter"
+import TreePresenter from "./1_Presenter";
 
 export default TreePresenter;
