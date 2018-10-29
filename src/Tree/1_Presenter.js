@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import * as d3 from "d3"
 
 let linkPathCreator;
@@ -97,29 +97,40 @@ const SubTree = ({ root, direction }) => {
     }
   }
 
+  const arrowheadWidth = 3;
+  const arrowheadHeight = 10;
+
   return (
-    <g transform={`translate(${dyParent},${dxParent})`} className="tree">
-      <g className="nodes">
-        <circle {...nodeCircleAttributesCreator(root)}/>
+    <Fragment>
+      <defs>
+        <marker id="arrowhead" markerWidth={arrowheadHeight} markerHeight="10" refX={arrowheadHeight} refY={arrowheadWidth} orient="auto" markerUnits="strokeWidth">
+          <path d={`M0,0 L0,${arrowheadWidth*2} L${arrowheadHeight},${arrowheadWidth} z`} />
+        </marker>
+      </defs>
+
+      <g transform={`translate(${dyParent},${dxParent})`} className="tree">
+        <g className="nodes">
+          <circle {...nodeCircleAttributesCreator(root)}/>
+            {
+              root.children ? 
+                <g className="children">
+                  {root.children.map((child, key) => <SubTree root={child} key={key} direction={direction}/>)}
+                </g> :
+                null
+            }
+        </g>
+        <g {...linkGroupAttributesCreator()} className="links">
           {
-            root.children ? 
-              <g className="children">
-                {root.children.map((child, key) => <SubTree root={child} key={key} direction={direction}/>)}
-              </g> :
-              null
+            root.parent ? 
+            <path d={linkPathCreator({
+              source: {x:  -dxParent, y: -dyParent },
+              target: {x: 0, y: 0 }
+            })} markerEnd="url(#arrowhead)"/> :
+            null
           }
+        </g>
       </g>
-      <g {...linkGroupAttributesCreator()} className="links">
-        {
-          root.parent ? 
-          <path d={linkPathCreator({
-            source: {x:  -dxParent, y: -dyParent },
-            target: {x: 0, y: 0 }
-          })}/> :
-          null
-        }
-      </g>
-    </g>
+    </Fragment>
   )
 }
 

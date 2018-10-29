@@ -2,7 +2,7 @@ import React from "react";
 import Tree from "./Tree";
 
 const svgWidth = 400;
-const svgHeight = 200;
+const svgHeight = 1000;
 
 const data = {
   "name": "Eve",
@@ -50,11 +50,12 @@ const containerAttributes = {
 
 const treeProps = {
   direction: "down",
-  rootPosition: [100, svgHeight / 2],
+  rootPosition: [svgWidth/2, 10],
   spacing: {
-    parentChild: 40,
-    sibling: 10
+    parentChild: 100,
+    sibling: 20
   },
+  nodeDiameter: 10,
   data
 }
 
