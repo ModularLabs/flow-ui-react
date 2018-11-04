@@ -63,20 +63,13 @@ const createPopulation = ({
   return population;
 };
 
-const population = createPopulation({
-  generationQty: 4,
-  minGenerationPopulation: 1,
-  maxGenerationPopulation: 2
-});
-
 const createHierarchy = population =>
   d3
     .stratify()
     .id(d => d.name)
     .parentId(d => d.parentName)(population);
 
-const hierarchy = createHierarchy(population);
-
 export default {
-  createHierarchy
+  createHierarchy,
+  createPopulation
 };
