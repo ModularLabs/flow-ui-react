@@ -1,3 +1,3 @@
-import SubTree from "./1_Presenter";
+import SubTreePresenter from "./1_Presenter";
 
-export default SubTree;
+export default SubTreePresenter;
