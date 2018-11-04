@@ -2,10 +2,11 @@ var path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: "./src/Link.js",
+  entry: "./lib/index.js",
   output: {
     path: path.resolve("lib"),
-    filename: "link.js",
+    // path: "./",
+    filename: "index.js",
     libraryTarget: "commonjs2"
   },
   module: {
@@ -16,9 +17,5 @@ module.exports = {
         use: "babel-loader"
       }
     ]
-  },
-  resolve: {
-    extensions: [".ts", ".js", "*"],
-    modules: [path.resolve(__dirname, "./src"), "node_modules"]
   }
 };
