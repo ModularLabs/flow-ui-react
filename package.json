@@ -11,7 +11,8 @@
     "recompose": "^0.30.0"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
