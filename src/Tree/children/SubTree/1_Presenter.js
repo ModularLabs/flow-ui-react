@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import * as d3 from "d3";
 
-import Link from "../Link";
+import Link from "../../../Link";
+import ArrowheadDefs from "../ArrowheadDefs";
 
 const linkGroupAttributesCreator = () => ({
   fill: "none",
@@ -13,28 +13,6 @@ const nodeCircleAttributesCreator = node => ({
   r: 2.5,
   fill: node.children ? "#555" : "#999"
 });
-
-const TreePresenter = ({
-  rootPosition,
-  direction,
-  spacing: { parentChild: parentChildSpacing, sibling: siblingSpacing },
-  data
-}) => {
-  const treeCreator = d3.tree().nodeSize([siblingSpacing, parentChildSpacing]);
-  const root = d3.hierarchy(data);
-  const tree = treeCreator(root);
-
-  const subTreeProps = {
-    root: tree,
-    direction
-  };
-
-  return (
-    <g transform={`translate(${rootPosition[0]},${rootPosition[1]})`}>
-      <SubTree {...subTreeProps} />
-    </g>
-  );
-};
 
 const SubTree = ({ root, direction }) => {
   let dxParent = 0;
@@ -85,28 +63,9 @@ const SubTree = ({ root, direction }) => {
     }
   }
 
-  const arrowheadWidth = 3;
-  const arrowheadHeight = 10;
-
   return (
     <Fragment>
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth={arrowheadHeight}
-          markerHeight="10"
-          refX={arrowheadHeight}
-          refY={arrowheadWidth}
-          orient="auto"
-          markerUnits="strokeWidth"
-        >
-          <path
-            d={`M0,0 L0,${arrowheadWidth *
-              2} L${arrowheadHeight},${arrowheadWidth} z`}
-          />
-        </marker>
-      </defs>
-
+      <ArrowheadDefs />
       <g transform={`translate(${dyParent},${dxParent})`} className="tree">
         <g className="nodes">
           <circle {...nodeCircleAttributesCreator(root)} />
@@ -140,4 +99,4 @@ const SubTree = ({ root, direction }) => {
   );
 };
 
-export default TreePresenter;
+export default SubTree;

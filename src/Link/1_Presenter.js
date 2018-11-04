@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import * as d3 from "d3";
 
 const LinkPresenter = ({
@@ -28,31 +28,13 @@ const LinkPresenter = ({
   }
 
   return (
-    <Fragment>
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth={arrowheadHeight}
-          markerHeight="10"
-          refX={arrowheadHeight}
-          refY={arrowheadWidth}
-          orient="auto"
-          markerUnits="strokeWidth"
-        >
-          <path
-            d={`M0,0 L0,${arrowheadWidth *
-              2} L${arrowheadHeight},${arrowheadWidth} z`}
-          />
-        </marker>
-      </defs>
-      <path
-        d={linkPathCreator({
-          source: startCoordinates,
-          target: endCoordinates
-        })}
-        markerEnd="url(#arrowhead)"
-      />
-    </Fragment>
+    <path
+      d={linkPathCreator({
+        source: startCoordinates,
+        target: endCoordinates
+      })}
+      markerEnd="url(#arrowhead)"
+    />
   );
 };
 

@@ -1,3 +1,3 @@
-import TreePresenter from "./1_Presenter";
+import PropsMap from "./1_PropsMap";
 
-export default TreePresenter;
+export default PropsMap;

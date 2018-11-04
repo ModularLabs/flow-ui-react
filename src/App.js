@@ -34,6 +34,9 @@ const data = {
     },
     {
       name: "Azura"
+    },
+    {
+      name: "test"
     }
   ]
 };
@@ -49,7 +52,7 @@ const containerAttributes = {
 };
 
 const treeProps = {
-  direction: "up",
+  direction: "down",
   rootPosition: [svgWidth / 2, svgHeight / 2],
   spacing: {
     parentChild: 100,
