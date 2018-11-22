@@ -49,3 +49,32 @@ const App = () => (
 ### Tree
 
 Uses Link and Node components
+
+## Local Development
+
+### Establish link
+
+1. Create output link
+```bash
+# from /flow-ui-react
+yarn link
+``` 
+
+2. Create input link
+```bash
+# from /my-other-project
+yarn link flow-ui-react
+```
+
+### Making changes
+
+1. Make sure you're linked
+
+2. Build
+```bash
+yarn build
+```
+
+## Publishing to npm
+
+1. 
